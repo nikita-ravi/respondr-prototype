@@ -1,0 +1,49 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# AWS
+lambda_package/
+lambda_deployment.zip
+config/dev_user_credentials.txt
+config/account_id.txt
+config/lambda_role_arn.txt
+config/lambda_function_arn.txt
+config/bucket_names.txt
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Test files
+test_documents/
+
+# Streamlit
+.streamlit/secrets.toml
+.streamlit/cache/
+
+# OS
+.DS_Store
