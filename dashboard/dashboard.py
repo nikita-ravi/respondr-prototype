@@ -29,8 +29,36 @@ REGION = 'us-east-1'
 @st.cache_resource
 def get_aws_clients():
     """Initialize and cache AWS clients."""
-    dynamodb = boto3.resource('dynamodb', region_name=REGION)
-    s3_client = boto3.client('s3', region_name=REGION)
+    # Try to get credentials from Streamlit secrets (for cloud deployment)
+    # Falls back to default credentials (for local development)
+    try:
+        aws_access_key = st.secrets.get("AWS_ACCESS_KEY_ID")
+        aws_secret_key = st.secrets.get("AWS_SECRET_ACCESS_KEY")
+        aws_region = st.secrets.get("AWS_DEFAULT_REGION", REGION)
+
+        if aws_access_key and aws_secret_key:
+            # Use credentials from secrets
+            dynamodb = boto3.resource(
+                'dynamodb',
+                region_name=aws_region,
+                aws_access_key_id=aws_access_key,
+                aws_secret_access_key=aws_secret_key
+            )
+            s3_client = boto3.client(
+                's3',
+                region_name=aws_region,
+                aws_access_key_id=aws_access_key,
+                aws_secret_access_key=aws_secret_key
+            )
+        else:
+            # Fall back to default credentials (local development)
+            dynamodb = boto3.resource('dynamodb', region_name=REGION)
+            s3_client = boto3.client('s3', region_name=REGION)
+    except:
+        # Fall back to default credentials
+        dynamodb = boto3.resource('dynamodb', region_name=REGION)
+        s3_client = boto3.client('s3', region_name=REGION)
+
     return dynamodb, s3_client
 
 dynamodb, s3_client = get_aws_clients()
